@@ -1,0 +1,46 @@
+﻿@model MDS.Models.RecipeIngredient
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1> Index </h1>
+<h4> Ingredient </h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdIngredient" class="control-label"></label>
+                <select id="IdIngredient" asp-for="IdIngredient" class="form-control" asp-items="@ViewBag.ingredients"></select>
+                <span asp-validation-for="IdIngredient" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form> 
+    </div>
+</div>
+
+<div> 
+    <a class="nav-link text-dark" asp-area="" asp-controller="Recipes" asp-action="Index">Back</a>
+     
+</div>
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");  
+    }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"/>
+    <script type="text/javascript" scr="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" scr="https://cdn.jsdelivr.net/npm/select2@Base64FormattingOptions.0.13/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#IdIngredient").select2();
+        });    
+    </script>
+}
+

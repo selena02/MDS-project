@@ -1,0 +1,49 @@
+﻿@model MDS.Models.Recipe
+
+<form method="post" action="/Recipes/Edit/@Model.IdRecipe">
+    <br />
+    <div class="card ">
+        <div class="card-header text-center" style="font-family: 'Trocchi', serif; font-size:30px">
+            Edit Recipe
+        </div>
+        <div class="card-body">
+           
+            <blockquote class="blockquote mb-0">
+                @Html.Label("NameRecipe","Give your recipe a name")
+                @Html.EditorFor(m => m.NameRecipe, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.NameRecipe, null, new {@class = "text-danger" })
+                <br /><br />
+                @Html.Label("DescriptionRecipe", "Your recipe ")
+                @Html.EditorFor(m => m.DescriptionRecipe, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("DescriptionRecipe", null, new { @class ="text-danger" })
+                <br />
+                <br />
+
+                <br /><br />
+                @Html.Label("PhotoLink", "Your recipe ")
+                @Html.EditorFor(m => m.PhotoLink, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("PhotoLink", null, new { @class ="text-danger" })
+                <br />
+                <br />
+
+                <br /><br />
+                @Html.Label("NrPortions", "Your recipe ")
+                @Html.EditorFor(m => m.NrPortions, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("NrPortions", null, new { @class ="text-danger" })
+                <br />
+                <br />
+
+                <br /><br />
+                @Html.Label("NrCalories", "Your recipe ")
+                @Html.EditorFor(m => m.NrCalories, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessage("NrCalories", null, new { @class ="text-danger" })
+                <br />
+                <br />
+
+
+                <button class="btn btn-outline-success" style=" border-radius: 25px;">Recipe</button>
+            </blockquote>
+        </div>
+    </div>
+
+</form>

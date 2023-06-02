@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:DefaultConnection"
+    },
+    "mssql2": {
+      "secretStore": null,
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:DB",
+      "dynamicId": null
+    },
+    "mssql3": {
+      "secretStore": null,
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:projectBd",
+      "dynamicId": null
+    },
+    "mssql4": {
+      "secretStore": null,
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:projDB",
+      "dynamicId": null
+    },
+    "mssql5": {
+      "secretStore": null,
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:ProjectMDS",
+      "dynamicId": null
+    }
+  }
+}
