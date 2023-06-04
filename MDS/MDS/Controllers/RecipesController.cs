@@ -24,16 +24,17 @@ namespace MDS.Controllers
             db = context;
             _userManager = userManager;
             _roleManager = roleManager;
-        } 
+        }
         public IActionResult Index()
-        {   var _perPage = 3;
+        {
+            var _perPage = 3;
             var recipes = db.Recipes;
-            int totalItems ;
+            int totalItems;
             var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
             var offset = 0;
-            var paginatedRecipes = recipes.Skip(offset).Take(_perPage); 
+            var paginatedRecipes = recipes.Skip(offset).Take(_perPage);
             var search = "";
-             
+
             // search bar
             if (!string.IsNullOrEmpty(HttpContext.Request.Query["search"]))
             {
@@ -57,16 +58,16 @@ namespace MDS.Controllers
 
                     ViewBag.SearchString = search;
 
-                      
+
 
                     if (TempData.ContainsKey("message"))
                     {
                         ViewBag.message = TempData["message"].ToString();
                     }
 
-                      totalItems = articles.Count();
-                      currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
-                      offset = 0;
+                    totalItems = articles.Count();
+                    currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
+                    offset = 0;
 
                     if (!currentPage.Equals(0))
                     {
@@ -75,7 +76,7 @@ namespace MDS.Controllers
 
                     var paginatedRecipes1 = articles.Skip(offset).Take(_perPage);
 
- 
+
                     ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
                     ViewBag.Recipes = paginatedRecipes1;
 
@@ -83,23 +84,23 @@ namespace MDS.Controllers
                     {
                         ViewBag.Msg = TempData["message"].ToString();
                     }
-                    ViewBag.PaginationBaseUrl = "/Recipes/Index/?page"; 
+                    ViewBag.PaginationBaseUrl = "/Recipes/Index/?page";
                     return View();
                 }
             }
 
             ViewBag.SearchString = search;
 
-              _perPage = 3;
+            _perPage = 3;
 
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.message = TempData["message"].ToString();
             }
 
-              totalItems = recipes.Count();
-              currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
-              offset = 0;
+            totalItems = recipes.Count();
+            currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
+            offset = 0;
 
             if (!currentPage.Equals(0))
             {
@@ -108,7 +109,7 @@ namespace MDS.Controllers
             paginatedRecipes = recipes.Skip(offset).Take(_perPage);
 
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
-            ViewBag.Recipes = paginatedRecipes; 
+            ViewBag.Recipes = paginatedRecipes;
 
             if (TempData.ContainsKey("message"))
             {
@@ -154,12 +155,12 @@ namespace MDS.Controllers
                                       .Include(r => r.RecipeIngredients)
                                       .ThenInclude(ri => ri.Ingredient)
                                       .FirstOrDefault(r => r.IdRecipe == id);
-             
+
 
             if (recipe1 != null)
             {
-                ViewBag.Recipe1 = recipe1; 
-                ViewBag.Ingredients = recipe1.RecipeIngredients?.Select(ri => ri.Ingredient).ToList() ?? new List<Ingredient>();
+                ViewBag.Recipe1 = recipe1;
+                ViewBag.RecipeIngredients = recipe1.RecipeIngredients?.ToList() ?? new List<RecipeIngredient>();
 
                 if (TempData.ContainsKey("message"))
                 {
@@ -179,39 +180,39 @@ namespace MDS.Controllers
 
 
         [HttpPost]
-         public IActionResult Show([FromForm] Comment comment)
-         {
-             comment.Date = DateTime.Now;
-             comment.UserId = _userManager.GetUserId(User);
+        public IActionResult Show([FromForm] Comment comment)
+        {
+            comment.Date = DateTime.Now;
+            comment.UserId = _userManager.GetUserId(User);
 
-             if (ModelState.IsValid)
-             {
-                 db.Comments.Add(comment);
-                 db.SaveChanges();
-                 return Redirect("/Recipes/Show/" + comment.IdRecipe);
-             }
-             else
-             {
-                 Recipe rec = db.Recipes.Include(r => r.Comments)
-                                        .FirstOrDefault(r => r.IdRecipe == comment.IdRecipe);
+            if (ModelState.IsValid)
+            {
+                db.Comments.Add(comment);
+                db.SaveChanges();
+                return Redirect("/Recipes/Show/" + comment.IdRecipe);
+            }
+            else
+            {
+                Recipe rec = db.Recipes.Include(r => r.Comments)
+                                       .FirstOrDefault(r => r.IdRecipe == comment.IdRecipe);
 
-                 if (rec != null)
-                 {
-                     ViewBag.nr = rec.Comments;
-                     return View(rec);
-                 }
-                 else
-                 {
-                     return NotFound();
-                 }
-             }
-         }
+                if (rec != null)
+                {
+                    ViewBag.nr = rec.Comments;
+                    return View(rec);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+        }
 
 
 
 
         [HttpPost]
-        public IActionResult AddIngredient(int recipeId, string ingredientName, string ingredientUnit)
+        public IActionResult AddIngredient(int recipeId, string ingredientName, string ingredientUnit, int quantity)
         {
             Recipe recipe = db.Recipes.Include(r => r.RecipeIngredients)
                                       .FirstOrDefault(r => r.IdRecipe == recipeId);
@@ -232,7 +233,8 @@ namespace MDS.Controllers
                 RecipeIngredient recipeIngredient = new RecipeIngredient
                 {
                     Ingredient = ingredient,
-                    Recipe = recipe
+                    Recipe = recipe,
+                    Quantity = quantity
                 };
 
                 recipe.RecipeIngredients.Add(recipeIngredient);
@@ -240,6 +242,7 @@ namespace MDS.Controllers
 
                 // Update the ViewBag with the new list of ingredients
                 ViewBag.Ingredients = recipe.RecipeIngredients.Select(ri => ri.Ingredient).ToList();
+
 
                 // Redirect to the recipe details page or perform any other desired action
                 return RedirectToAction("Show", new { id = recipeId });
@@ -249,17 +252,17 @@ namespace MDS.Controllers
                 return NotFound();
             }
         }
-         
+
 
         public IActionResult New()
         {
             Recipe recipe = new Recipe();
             return View(recipe);
-        } 
+        }
         [HttpPost]
         public IActionResult New(Recipe recipe)
         {
-           
+
             if (ModelState.IsValid)
             {
                 db.Recipes.Add(recipe);
@@ -303,7 +306,7 @@ namespace MDS.Controllers
                 if (User.IsInRole("Admin"))
                 {
                     recipe.NameRecipe = requestRecipe.NameRecipe;
-                    recipe.DescriptionRecipe= requestRecipe.DescriptionRecipe;
+                    recipe.DescriptionRecipe = requestRecipe.DescriptionRecipe;
                     recipe.PhotoLink = requestRecipe.PhotoLink;
                     recipe.NrPortions = requestRecipe.NrPortions;
                     recipe.NrCalories = requestRecipe.NrCalories;

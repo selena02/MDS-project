@@ -43,6 +43,92 @@
 <br />
  
 
+
+
+
+@{
+    ViewData["Title"] = "Add Ingredients";
+    bool isAdmin = User.IsInRole("Admin");
+}
+@if (isAdmin)
+{
+    <h2>Add Ingredients</h2>
+
+    <form method="post" action="/Recipes/AddIngredient">
+        <input type="hidden" name="recipeId" value="@Model.IdRecipe" />
+
+        <h2>Ingredients</h2>
+
+        <ul>
+            @foreach (var ingredient in ViewBag.RecipeIngredients)
+            {
+                <li>@ingredient.Ingredient.NameIngredient - @ingredient.Quantity @ingredient.Ingredient.UnitIngredient</li>
+            }
+        </ul>
+
+
+        <div class="form-group">
+            <label for="ingredientName">Ingredient Name</label>
+            <input type="text" class="form-control" id="ingredientName" name="ingredientName" required />
+        </div>
+
+        <div class="form-group">
+            <label for="ingredientUnit">Ingredient Unit</label>
+            <input type="text" class="form-control" id="ingredientUnit" name="ingredientUnit" required />
+        </div>
+        <div>
+            <label for="quantity">Quantity</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" required />
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-primary">Add Ingredient</button>
+    </form>
+    <br />
+    <br />
+    <br />
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-2"></div>
+
+        <div class="col-md-8">
+
+            <div class="card">
+
+                <form method="post" action="/Recipes/Show/@Model.IdRecipe">
+
+                    <div class="card-body">
+
+                        <input type="hidden" name="IdRecipe" value="@Model.IdRecipe" />
+                        <label>Write your comment</label>
+                        <br />
+                        <textarea class="form-control" name="Content"></textarea>
+                        @Html.ValidationMessage("Content", null, new { @class ="text-danger" })
+                        <br />
+                        <button class="btn btn-success " type="submit">Add</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-2"></div>
+
+    </div>
+</div>
+<br />
+<br />
+<br />
+
+
 <p>Comentarii</p>
 @foreach (var comm in ViewBag.nr)
 {
@@ -95,77 +181,3 @@
 
     </div>
 }
-
-<div class="container">
-
-    <div class="row">
-
-        <div class="col-md-2"></div>
-
-        <div class="col-md-8">
-
-            <div class="card">
-
-                <form method="post" action="/Recipes/Show/@Model.IdRecipe">
-
-                    <div class="card-body">
-
-                        <input type="hidden" name="IdRecipe" value="@Model.IdRecipe" />
-                        <label>Write your comment</label>
-                        <br />
-                        <textarea class="form-control" name="Content"></textarea>
-                        @Html.ValidationMessage("Content", null, new { @class ="text-danger" })
-                        <br />
-                        <button class="btn btn-success " type="submit">Add</button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-        <div class="col-md-2"></div>
-
-    </div>
-</div>
-<br />
-<br />
-<br /> 
-
- 
-
-@{
-    ViewData["Title"] = "Add Ingredients";
-}
-
-<h1>Add Ingredients</h1>
-
-<form method="post" action="/Recipes/AddIngredient">
-    <input type="hidden" name="recipeId" value="@Model.IdRecipe" />
-
-    <h1>Ingredients</h1>
-
-    <ul>
-        @foreach (var ingredient in ViewBag.Ingredients)
-        {
-            <li>@ingredient.NameIngredient - @ingredient.UnitIngredient</li>
-        }
-    </ul>
-
-
-    <div class="form-group">
-        <label for="ingredientName">Ingredient Name</label>
-        <input type="text" class="form-control" id="ingredientName" name="ingredientName" required />
-    </div>
-
-    <div class="form-group">
-        <label for="ingredientUnit">Ingredient Unit</label>
-        <input type="text" class="form-control" id="ingredientUnit" name="ingredientUnit" required />
-    </div>
-
-    
-
-    <button type="submit" class="btn btn-primary">Add Ingredient</button>
-</form>

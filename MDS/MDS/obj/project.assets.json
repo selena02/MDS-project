@@ -10465,11 +10465,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Antonia\\source\\repos\\p2\\MDS\\MDS\\MDS.csproj",
+      "projectUniqueName": "C:\\Users\\Antonia\\source\\repos\\p3\\MDS\\MDS\\MDS.csproj",
       "projectName": "MDS",
-      "projectPath": "C:\\Users\\Antonia\\source\\repos\\p2\\MDS\\MDS\\MDS.csproj",
+      "projectPath": "C:\\Users\\Antonia\\source\\repos\\p3\\MDS\\MDS\\MDS.csproj",
       "packagesPath": "C:\\Users\\Antonia\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Antonia\\source\\repos\\p2\\MDS\\MDS\\obj\\",
+      "outputPath": "C:\\Users\\Antonia\\source\\repos\\p3\\MDS\\MDS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
