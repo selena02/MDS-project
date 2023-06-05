@@ -141,7 +141,8 @@ namespace MDS.Controllers
             ViewBag.Recipe = recipe;
 
             var lista = db.Comments.Include(c => c.User).Where(a => a.IdRecipe == id);
-            ViewBag.nr = lista;
+            ViewBag.Comm = lista;
+            ViewBag.HasComm = lista.Any();
 
             if (TempData.ContainsKey("message"))
             {
@@ -198,7 +199,8 @@ namespace MDS.Controllers
 
                 if (rec != null)
                 {
-                    ViewBag.nr = rec.Comments;
+                    ViewBag.Comm = rec.Comments;
+                    ViewBag.HasComm = rec.Comments.Any();
                     return View(rec);
                 }
                 else
@@ -241,7 +243,7 @@ namespace MDS.Controllers
                 db.SaveChanges();
 
                 // Update the ViewBag with the new list of ingredients
-                ViewBag.Ingredients = recipe.RecipeIngredients.Select(ri => ri.Ingredient).ToList();
+                //ViewBag.Ingredients = recipe.RecipeIngredients.Select(ri => ri.Ingredient).ToList();
 
 
                 // Redirect to the recipe details page or perform any other desired action
@@ -260,6 +262,7 @@ namespace MDS.Controllers
             return View(recipe);
         }
         [HttpPost]
+        [Authorize(Roles = "User,Admin")]
         public IActionResult New(Recipe recipe)
         {
 

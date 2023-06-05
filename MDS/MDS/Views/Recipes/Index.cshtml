@@ -13,11 +13,17 @@
 
 
 
-
+@{
+    bool isAdmin = User.IsInRole("Admin");
+}
+@if(isAdmin){
 
    <div class="d-flex flex-row justify-content-between mt-5 ">
                 <a class="btn btn-outline-info" style=" border-radius: 25px;" href="/Recipes/New">Add a new recipe</a>
            </div>
+}
+<br />
+<br />
 @if (ViewBag.Msg != null)
 {
     <div class="alert alert-success" role="alert">

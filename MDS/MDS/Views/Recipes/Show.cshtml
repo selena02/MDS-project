@@ -41,7 +41,7 @@
 </div>
 <br />
 <br />
- 
+
 
 
 
@@ -50,23 +50,28 @@
     ViewData["Title"] = "Add Ingredients";
     bool isAdmin = User.IsInRole("Admin");
 }
-@if (isAdmin)
-{
-    <h2>Add Ingredients</h2>
 
-    <form method="post" action="/Recipes/AddIngredient">
-        <input type="hidden" name="recipeId" value="@Model.IdRecipe" />
 
-        <h2>Ingredients</h2>
+<h2>Add Ingredients</h2>
 
-        <ul>
-            @foreach (var ingredient in ViewBag.RecipeIngredients)
+<form method="post" action="/Recipes/AddIngredient">
+    <input type="hidden" name="recipeId" value="@Model.IdRecipe" />
+
+    <h2>Ingredients</h2>
+
+    <ul>
+        @if (Model.RecipeIngredients != null)
+        {
+            @foreach (var ingredient in Model.RecipeIngredients.ToList())
             {
                 <li>@ingredient.Ingredient.NameIngredient - @ingredient.Quantity @ingredient.Ingredient.UnitIngredient</li>
             }
-        </ul>
 
+        }
+    </ul>
 
+    @if (isAdmin)
+    {
         <div class="form-group">
             <label for="ingredientName">Ingredient Name</label>
             <input type="text" class="form-control" id="ingredientName" name="ingredientName" required />
@@ -84,11 +89,12 @@
         <br />
 
         <button type="submit" class="btn btn-primary">Add Ingredient</button>
-    </form>
-    <br />
-    <br />
-    <br />
-}
+    }
+</form>
+<br />
+<br />
+<br />
+
 
 <div class="container">
 
@@ -128,56 +134,64 @@
 <br />
 <br />
 
-
-<p>Comentarii</p>
-@foreach (var comm in ViewBag.nr)
+@if (ViewBag.HasComm)
 {
-    <div class="container">
-        <div class="row">
-            <div class="col-md-2"></div>
+    <p>Comentarii</p>
+    @foreach (var comm in ViewBag.Comm)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2"></div>
 
-            <div class="col-md-8">
+                <div class="col-md-8">
 
-                <div>
+                    <div>
 
-                    <p>@comm.Content</p>
-                    <small>@comm.Date</small>
-                    <strong><i class="bi bi-person"></i>@(comm.User != null ? comm.User.UserName : "")</strong>
+                        <p>@comm.Content</p>
+                        <small>@comm.Date</small>
+                        <strong>
+                            <i class="bi bi-person"></i>@(
+                    comm.User != null ? comm.User.UserName : "")
+                        </strong>
+
+                    </div>
+                    <br>
+                    @if ((comm.UserId != null && ViewBag.UserCurent != null && ViewBag.EsteAdmin != null) || ViewBag.EsteAdmin)
+                    {
+                        @if (comm.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+                        {
+                            <div class="d-flex">
+
+                                <div>
+
+                                    <a class="btn btn-outline-primary" style=" border-radius: 25px;" href="/Comments/Edit/@comm.IdComment"><i class="bi bi-pencil-square"></i>Edit</a>
+
+                                </div>
+
+                                <div>
+
+                                    <form method="post" action="/Comments/Delete/@comm.IdComment">
+
+                                        <button class="btn btn-outline-danger" style=" border-radius: 25px;" type="submit"><i class="bi bi-trash"></i>Delete</button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    }
+
+                    <br />
 
                 </div>
-                <br>
-                @if ((comm.UserId != null && ViewBag.UserCurent != null && ViewBag.EsteAdmin != null) || ViewBag.EsteAdmin)
-                {
-                    @if (comm.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
-                    {
-                        <div class="d-flex">
 
-                            <div>
-
-                                <a class="btn btn-outline-primary" style=" border-radius: 25px;" href="/Comments/Edit/@comm.IdComment"><i class="bi bi-pencil-square"></i>Edit</a>
-
-                            </div>
-
-                            <div>
-
-                                <form method="post" action="/Comments/Delete/@comm.IdComment">
-
-                                    <button class="btn btn-outline-danger" style=" border-radius: 25px;" type="submit"><i class="bi bi-trash"></i>Delete</button>
-
-                                </form>
-
-                            </div>
-
-                        </div>
-                    }   }
-
-                <br />
+                <div class="col-md-2"></div>
 
             </div>
 
-            <div class="col-md-2"></div>
-
         </div>
+    }
 
-    </div>
 }
