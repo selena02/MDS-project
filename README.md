@@ -12,6 +12,8 @@ Sandu Anastasia 242
 
 Link trello : https://trello.com/b/4mmnsRrS/projectmds
 
+Link Video: https://www.youtube.com/watch?v=1XjRk8AiQus
+
 Surse ajutatoare: ChatGPT
 
 
