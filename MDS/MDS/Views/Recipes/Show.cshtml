@@ -4,7 +4,6 @@
 <br />
 <br />
 <br />
-
 @if (ViewBag.Msg != null)
 {
     <div class="alert alert-success" role="alert">
@@ -29,7 +28,6 @@
             <div class="d-flex flex-row justify-content-between">
 
                 <a class="btn btn-outline-primary" style=" border-radius: 25px;" href=/Recipes/Edit/@Model.IdRecipe>Edit Recipe</a>
-
                 <form method="post" action=/Recipes/Delete/@Model.IdRecipe>
                     <button class="btn btn-outline-danger" style=" border-radius: 25px;" type="submit">Delete Recipe</button>
                 </form>
@@ -41,35 +39,29 @@
 </div>
 <br />
 <br />
-
-
-
-
-
 @{
     ViewData["Title"] = "Add Ingredients";
     bool isAdmin = User.IsInRole("Admin");
 }
-
-
-
-
+<!-- Afiseaza ingredientele unei retete -->
+<h2>Ingredients</h2>
+<ul>
+    @if (Model.RecipeIngredients != null)
+    {
+        @foreach (var ingredient in Model.RecipeIngredients.ToList())
+        {
+            <li>@ingredient.Ingredient.NameIngredient - @ingredient.Quantity @ingredient.Ingredient.UnitIngredient</li>
+            @if (isAdmin)
+            {
+                <form method="post" action="/RecipeIngredients/Delete/@ingredient.IdRecipeIngredient">
+                    <button class="btn btn-outline-danger" style=" border-radius: 25px;" type="submit"><i class="bi bi-trash"></i>Delete</button>
+                 </form>
+            }
+        }
+    }
+</ul>
 <form method="post" action="/Recipes/AddIngredient">
     <input type="hidden" name="recipeId" value="@Model.IdRecipe" />
-    <!-- Afiseaza ingredientele unei retete -->
-
-    <h2>Ingredients</h2>
-
-    <ul>
-        @if (Model.RecipeIngredients != null)
-        {
-            @foreach (var ingredient in Model.RecipeIngredients.ToList())
-            {
-                <li>@ingredient.Ingredient.NameIngredient - @ingredient.Quantity @ingredient.Ingredient.UnitIngredient</li>
-            }
-
-        }
-    </ul>
     <!-- Administratorul poate adauga ingrediente noi intr-o reteta -->
     @if (isAdmin)
     {
@@ -96,8 +88,6 @@
 <br />
 <br />
 <br />
-
-
 <div class="container">
 
     <div class="row">
@@ -135,7 +125,6 @@
 <br />
 <br />
 <br />
-
 @if (ViewBag.HasComm)
 {
     <p>Comentarii</p>

@@ -112,8 +112,8 @@ namespace MDS.Controllers
                 return View(requestRecipeIngredient);
             }
         }
-        // [HttpPost]
-        [Authorize(Roles = "User,Admin")]
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             RecipeIngredient recipeIngredient = db.RecipeIngredients.Where(art => art.IdRecipeIngredient == id)
@@ -124,12 +124,12 @@ namespace MDS.Controllers
                 db.RecipeIngredients.Remove(recipeIngredient);
                 db.SaveChanges();
                 TempData["message"] = "Ingredient deleted sucesfully";
-                return RedirectToAction("/Recipes/Show/@ViewBag.IdReteta");
+                return Redirect("/Recipes/Show/" + recipeIngredient.IdRecipe);
             }
             else
             {
                 TempData["message"] = "Ingredient cannot be deleted";
-                return RedirectToAction("/Recipes/Show/@ViewBag.IdReteta");
+                return Redirect("/Recipes/Show/" + recipeIngredient.IdRecipe);
 
             }
         }

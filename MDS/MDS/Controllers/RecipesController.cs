@@ -32,92 +32,65 @@ namespace MDS.Controllers
             int totalItems;
             var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
             var offset = 0;
-            var paginatedRecipes = recipes.Skip(offset).Take(_perPage);
-            var search = "";
 
-            // search bar
-            if (!string.IsNullOrEmpty(HttpContext.Request.Query["search"]))
+            // Checkbox selection
+            var selectedIngredients = HttpContext.Request.Query["selectedIngredients"].ToArray();
+            ViewBag.AllIngredients = db.Ingredients;
+
+            if (selectedIngredients.Length > 0)
             {
-                search = HttpContext.Request.Query["search"].ToString().Trim();
+                var selectedIngredientsList = selectedIngredients.Select(int.Parse).ToList();
 
-                var nume = db.Ingredients.FirstOrDefault(a => a.NameIngredient == search);
-
-                List<int> recipeIds = null;
-                if (nume != null)
-                {
-                    recipeIds = db.RecipeIngredients
-                    .Where(ri => ri.IdIngredient == nume.IdIngredient)
+                var recipeIds = db.RecipeIngredients
+                    .Where(ri => selectedIngredientsList.Contains(ri.IdIngredient))
                     .Select(ri => ri.IdRecipe)
                     .Distinct()
                     .ToList();
 
-                    List<Recipe> recipesWithIngredient = db.Recipes
-                        .Where(r => recipeIds.Contains(r.IdRecipe))
+                if (recipeIds.Count > 0)
+                {
+                    // Apply pagination to the filtered recipes
+                    totalItems = recipeIds.Count;
+                    offset = (currentPage - 1) * _perPage;
+                    if (offset < 0)
+                    {
+                        offset = 0; // Ensure the offset is not negative
+                    }
+                    var paginatedRecipeIds = recipeIds.Skip(offset).Take(_perPage);
+
+                    var paginatedRecipes = db.Recipes
+                        .Where(r => paginatedRecipeIds.Contains(r.IdRecipe))
                         .ToList();
-                    var articles = db.Recipes.Where(article => recipeIds.Contains(article.IdRecipe)).ToList(); ;
-
-                    ViewBag.SearchString = search;
-
-
-
-                    if (TempData.ContainsKey("message"))
-                    {
-                        ViewBag.message = TempData["message"].ToString();
-                    }
-
-                    totalItems = articles.Count();
-                    currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
-                    offset = 0;
-
-                    if (!currentPage.Equals(0))
-                    {
-                        offset = (currentPage - 1) * _perPage;
-                    }
-
-                    var paginatedRecipes1 = articles.Skip(offset).Take(_perPage);
-
 
                     ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
-                    ViewBag.Recipes = paginatedRecipes1;
-
-                    if (TempData.ContainsKey("message"))
-                    {
-                        ViewBag.Msg = TempData["message"].ToString();
-                    }
-                    ViewBag.PaginationBaseUrl = "/Recipes/Index/?page";
-                    return View();
+                    return View(paginatedRecipes);
+                }
+                else
+                {
+                    // Handle the case when no recipes match the selected ingredients
+                    ViewBag.lastPage = 0;
+                    return View(Enumerable.Empty<Recipe>());
                 }
             }
-
-            ViewBag.SearchString = search;
-
-            _perPage = 3;
-
-            if (TempData.ContainsKey("message"))
+            else
             {
-                ViewBag.message = TempData["message"].ToString();
-            }
-
-            totalItems = recipes.Count();
-            currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
-            offset = 0;
-
-            if (!currentPage.Equals(0))
-            {
+                // Apply pagination to all recipes
+                totalItems = recipes.Count();
                 offset = (currentPage - 1) * _perPage;
-            }
-            paginatedRecipes = recipes.Skip(offset).Take(_perPage);
+                if (offset < 0)
+                {
+                    offset = 0; // Ensure the offset is not negative
+                }
+                var paginatedRecipes = recipes.Skip(offset).Take(_perPage);
 
-            ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
-            ViewBag.Recipes = paginatedRecipes;
-
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.Msg = TempData["message"].ToString();
+                ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)_perPage);
+                return View(paginatedRecipes);
             }
-            ViewBag.PaginationBaseUrl = "/Recipes/Index/?page";
-            return View();
         }
+
+
+
+
 
         private void SetAccessRights()
         {

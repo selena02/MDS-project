@@ -8,12 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\RecipeIngredients\Edit.cshtml" />
-    <Content Remove="Views\RecipeIngredients\Index.cshtml" />
-    <Content Remove="Views\RecipeIngredients\Show.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.15" />
