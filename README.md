@@ -1,5 +1,7 @@
 # MDS-project
 
+Cauta o reteta in functie de ce ai in frigider.
+
 # Membrii echipei:
 Hurloi Selena Andreea 242
 
@@ -13,7 +15,9 @@ Link trello : https://trello.com/b/4mmnsRrS/projectmds
 Surse ajutatoare: ChatGPT
 
 
+
 ![](https://github.com/AntoniaOancea/MDS-project/blob/main/diagram.png)
+
 
 
 ## As an app user, I want to be able to search for recipes that use specific ingredients that I have, so that I can find new and creative ways to use them.
