@@ -1,37 +1,72 @@
 ﻿@model IEnumerable<MDS.Models.Recipe>
 
+<style>
+    body {
+        background-color: #e0ebeb;
+    }
+
+    .card {
+        background-color: #ffebeb;
+    }
+</style>
+
+
+
+
 <!-- Adauga o noua reteta -->
 @{
     bool isAdmin = User.IsInRole("Admin");
 }
-@if(isAdmin){
+@if (isAdmin)
+{
+    <div class="d-flex flex-row justify-content-between mt-5">
 
-   <div class="d-flex flex-row justify-content-between mt-5 ">
-                <a class="btn btn-outline-info" style=" border-radius: 25px;" href="/Recipes/New">Add a new recipe</a>
-           </div>
+        <a class="btn btn-outline-info" style="border-radius: 25px; background-color: #2C3A47; color: #fff;" href="/Recipes/New">Add a new recipe</a>
+
+    </div>
+    <br />
 }
+
+<!-- Alege ce ingrediente vrei sa aiba reteta-->
+
+<div class="card">
+    <div class="card-body">
+        <p style="font-size:20">Choose your ingredients</p>
+        <form method="GET">
+            @foreach (var ingredient in ViewBag.AllIngredients)
+            {
+                <div>
+                    <input type="checkbox" id="@ingredient.NameIngredient" name="selectedIngredients" value="@ingredient.IdIngredient" class="custom-checkbox">
+                    <label for="@ingredient.NameIngredient">@ingredient.NameIngredient</label>
+                </div>
+            }
+            <br />
+            <button type="submit" class="btn btn-primary" style="border-radius: 25px; background-color: #2C3A47; color: #fff;">Filter</button>
+        </form>
+    </div>
+</div>
+
+
 <br />
 <br />
-<form method="GET">
-    @foreach (var ingredient in ViewBag.AllIngredients)
-    {
-        <div>
-            <input type="checkbox" id="@ingredient.NameIngredient" name="selectedIngredients" value="@ingredient.IdIngredient" class="custom-checkbox">
-            <label for="@ingredient.NameIngredient">@ingredient.NameIngredient</label>
-        </div>
-    }
-    <button type="submit">Filter</button>
-</form>
+@if (ViewBag.Msg != null)
+{
+    <div class="alert alert-success" role="alert" style="background-color: #d4edda; color: #155724;">
+        @ViewBag.Msg
+    </div>
+}
+
+<!-- Afiseaza retetele existente in baza de date -->
 @foreach (var recipe in Model)
 {
-    <div class="card" style="background-color:#f5f6fa">
+    <div class="card">
         <div class="card-body">
             <center>
-                <h3 class="card-title py-3 px-3 rounded-2" style="font-family: 'Trocchi', serif;"><i class="bi bi-airplane"></i>@recipe.NameRecipe</h3>
-                <img style="width:200px; border-radius: 25px;" src="@recipe.PhotoLink" class="card-img-top" />
+                <h3 class="card-title py-3 px-3 rounded-2" style="font-family: 'Trocchi', serif; color: #333;"><i class="bi bi-airplane"></i>@recipe.NameRecipe</h3>
+                <img style="width: 200px; border-radius: 25px; background-color: #fff;" src="@recipe.PhotoLink" class="card-img-top" />
             </center>
-            <div class="d-flex flex-row justify-content-between mt-5 ">
-                <a class="btn btn-outline-info" style="border-radius: 25px;" href="/Recipes/Show/@recipe.IdRecipe">See post</a>
+            <div class="d-flex flex-row justify-content-between mt-5">
+                <a class="btn btn-outline-info" style="border-radius: 25px; background-color: #2C3A47; color: #fff;" href="/Recipes/Show/@recipe.IdRecipe">See post</a>
             </div>
         </div>
     </div>
@@ -39,6 +74,7 @@
     <br />
 }
 
+<!-- Afisarea paginata a articolelor -->
 <div>
     <nav aria-label="Page navigation example">
         <ul class="pagination">

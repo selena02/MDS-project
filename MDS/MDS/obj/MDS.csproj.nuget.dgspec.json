@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\selen\\source\\repos\\MDS final\\MDS-project\\MDS\\MDS\\MDS.csproj": {}
+    "C:\\Users\\Ionut\\source\\repos\\altaMDS\\MDS-project\\MDS\\MDS\\MDS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\selen\\source\\repos\\MDS final\\MDS-project\\MDS\\MDS\\MDS.csproj": {
+    "C:\\Users\\Ionut\\source\\repos\\altaMDS\\MDS-project\\MDS\\MDS\\MDS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\selen\\source\\repos\\MDS final\\MDS-project\\MDS\\MDS\\MDS.csproj",
+        "projectUniqueName": "C:\\Users\\Ionut\\source\\repos\\altaMDS\\MDS-project\\MDS\\MDS\\MDS.csproj",
         "projectName": "MDS",
-        "projectPath": "C:\\Users\\selen\\source\\repos\\MDS final\\MDS-project\\MDS\\MDS\\MDS.csproj",
-        "packagesPath": "C:\\Users\\selen\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\selen\\source\\repos\\MDS final\\MDS-project\\MDS\\MDS\\obj\\",
+        "projectPath": "C:\\Users\\Ionut\\source\\repos\\altaMDS\\MDS-project\\MDS\\MDS\\MDS.csproj",
+        "packagesPath": "C:\\Users\\Ionut\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ionut\\source\\repos\\altaMDS\\MDS-project\\MDS\\MDS\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\selen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Ionut\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -90,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

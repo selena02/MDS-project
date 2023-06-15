@@ -1,9 +1,19 @@
 ﻿@model MDS.Models.Recipe
 <!-- Formularul pentru a adauga o noua reteta -->
 
+<style>
+    body {
+        background-color: #e0ebeb;
+    }
+
+    .card {
+        background-color: #ffebeb;
+    }
+</style>
+
 <form method="post" action="/Recipes/New">
     <br />
-    <div class="card ">
+    <div class="card">
         <div class="card-header text-center" style="font-family: 'Trocchi', serif; font-size:30px">
             Write your recipe
         </div>
@@ -40,8 +50,8 @@
                 <br />
                 <br />
 
-                 
-                <button class="btn btn-outline-success" style=" border-radius: 25px;">Add</button>
+
+                <button class="btn btn-outline-success" style="border-radius: 25px;">Add</button>
             </blockquote>
         </div>
     </div>

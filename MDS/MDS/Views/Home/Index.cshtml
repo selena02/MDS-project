@@ -2,8 +2,41 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    .background-image {
+        background-image: url("https://83fc79ea0e.cbaul-cdnwnd.com/d015a3ca800b94da5dabfdb5467cced1/200000267-1b25c1b25f/278530716_1312618802593169_1500621289519848550_n-1024x682.jpg?ph=83fc79ea0e");
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.2; /* Adjust the opacity value as desired */
+        z-index: -1; /* Move the background image behind other elements */
+    }
+
+    .central-image {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        position: relative;
+        z-index: 1; /* Bring the content in front of the background image */
+    }
+
+        .central-image a.btn {
+            border-radius: 25px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+</style>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <!-- modifica pagina de home -->
-    <a class="btn btn-outline-secondary" style=" border-radius: 25px;" href="/Recipes/Index">See the recipes</a>
+    <h1 class="display-4">RecipeMaster</h1>
+    <div class="central-image">
+        <a class="btn btn-outline-secondary" href="/Recipes/Index">See the recipes</a>
+    </div>
+    <div class="background-image"></div>
 </div>

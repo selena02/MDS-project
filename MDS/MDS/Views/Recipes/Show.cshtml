@@ -1,9 +1,25 @@
 ﻿@model MDS.Models.Recipe
 
-<a class="btn btn-outline-dark" style=" border-radius: 20px;" href="/Recipes/Index/"><i class="bi bi-skip-backward-fill"></i> Back to all recipes</a>
+<style>
+
+    .card {
+        background-color: #ffebeb;
+        border-radius: 20px;
+    }
+
+    body {
+        background-color: #e0ebeb;
+    }
+</style>
+
+</style>
+
+<a class="btn btn-outline-dark" style="border-radius: 20px; background-color: #ffebeb;" href="/Recipes/Index/"><i class="bi bi-skip-backward-fill"></i> Back to all recipes</a>
+
 <br />
 <br />
 <br />
+
 @if (ViewBag.Msg != null)
 {
     <div class="alert alert-success" role="alert">
@@ -11,25 +27,82 @@
     </div>
 }
 <br />
-<div class="card" style=" border-radius: 20px;">
+<div class="card">
 
-    <div class="card-body" style="background-color:#f5f6fa">
+    <div class="card-body">
         <center>
             <h3 class="card-title py-3 px-3 rounded-2" style="font-family: 'Trocchi', serif;">@Model.NameRecipe</h3>
+            <br /> <br />
+
+            <img style="width:400px; border-radius: 25px;" src="@Model.PhotoLink" class="card-img-top" />
+
         </center>
         <br />
+
+
+
         <div class="x-5"> @Model.DescriptionRecipe</div>
-        <img style="width:200px; border-radius: 25px;" src="@Model.PhotoLink" class="card-img-top" />
         <div class="x-5">Portions: @Model.NrPortions</div>
         <div class="x-5">Calories: @Model.NrCalories</div>
         <hr />
+
+
+        @{
+            ViewData["Title"] = "Add Ingredients";
+            bool isAdmin = User.IsInRole("Admin");
+        }
+
+        <form method="post" action="/Recipes/AddIngredient">
+            <input type="hidden" name="recipeId" value="@Model.IdRecipe" />
+            <!-- Display the ingredients of the recipe -->
+
+            <h4>Ingredients</h4>
+
+            <ul>
+                @if (Model.RecipeIngredients != null)
+                {
+                    @foreach (var ingredient in Model.RecipeIngredients.ToList())
+                    {
+                        <li>@ingredient.Ingredient.NameIngredient - @ingredient.Quantity @ingredient.Ingredient.UnitIngredient</li>
+                    }
+
+                }
+            </ul>
+            <!-- Admin can add new ingredients to the recipe -->
+            @if (isAdmin)
+            {
+                <h2>Add Ingredients</h2>
+                <div class="form-group">
+                    <label for="ingredientName">Ingredient Name</label>
+                    <input type="text" class="form-control" id="ingredientName" name="ingredientName" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="ingredientUnit">Ingredient Unit</label>
+                    <input type="text" class="form-control" id="ingredientUnit" name="ingredientUnit" required />
+                </div>
+                <div>
+                    <label for="quantity">Quantity</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" required />
+                </div>
+
+                <br />
+
+                <button type="submit" class="btn btn-primary">Add Ingredient</button>
+
+
+            }
+        </form>
+        <br />
+
         @if (ViewBag.EsteAdmin == true)
         {
             <div class="d-flex flex-row justify-content-between">
 
-                <a class="btn btn-outline-primary" style=" border-radius: 25px;" href=/Recipes/Edit/@Model.IdRecipe>Edit Recipe</a>
-                <form method="post" action=/Recipes/Delete/@Model.IdRecipe>
-                    <button class="btn btn-outline-danger" style=" border-radius: 25px;" type="submit">Delete Recipe</button>
+                <a class="btn btn-outline-primary" style="border-radius: 25px;" href="/Recipes/Edit/@Model.IdRecipe">Edit Recipe</a>
+
+                <form method="post" action="/Recipes/Delete/@Model.IdRecipe">
+                    <button class="btn btn-outline-danger" style="border-radius: 25px;" type="submit">Delete Recipe</button>
                 </form>
 
             </div>
@@ -39,150 +112,78 @@
 </div>
 <br />
 <br />
-@{
-    ViewData["Title"] = "Add Ingredients";
-    bool isAdmin = User.IsInRole("Admin");
-}
-<!-- Afiseaza ingredientele unei retete -->
-<h2>Ingredients</h2>
-<ul>
-    @if (Model.RecipeIngredients != null)
-    {
-        @foreach (var ingredient in Model.RecipeIngredients.ToList())
-        {
-            <li>@ingredient.Ingredient.NameIngredient - @ingredient.Quantity @ingredient.Ingredient.UnitIngredient</li>
-            @if (isAdmin)
+
+<br />
+<br />
+<br />
+
+<div class="card">
+
+    <div class="card-body">
+
+        <div class="card">
+
+            <br />
+            @if (ViewBag.HasComm)
             {
-                <form method="post" action="/RecipeIngredients/Delete/@ingredient.IdRecipeIngredient">
-                    <button class="btn btn-outline-danger" style=" border-radius: 25px;" type="submit"><i class="bi bi-trash"></i>Delete</button>
-                 </form>
-            }
-        }
-    }
-</ul>
-<form method="post" action="/Recipes/AddIngredient">
-    <input type="hidden" name="recipeId" value="@Model.IdRecipe" />
-    <!-- Administratorul poate adauga ingrediente noi intr-o reteta -->
-    @if (isAdmin)
-    {
-        <h2>Add Ingredients</h2>
-        <div class="form-group">
-            <label for="ingredientName">Ingredient Name</label>
-            <input type="text" class="form-control" id="ingredientName" name="ingredientName" required />
-        </div>
-
-        <div class="form-group">
-            <label for="ingredientUnit">Ingredient Unit</label>
-            <input type="text" class="form-control" id="ingredientUnit" name="ingredientUnit" required />
-        </div>
-        <div>
-            <label for="quantity">Quantity</label>
-            <input type="number" class="form-control" id="quantity" name="quantity" required />
-        </div>
-
-        <br />
-
-        <button type="submit" class="btn btn-primary">Add Ingredient</button>
-    }
-</form>
-<br />
-<br />
-<br />
-<div class="container">
-
-    <div class="row">
-
-        <div class="col-md-2"></div>
-
-        <div class="col-md-8">
-
-            <div class="card">
-
-                <form method="post" action="/Recipes/Show/@Model.IdRecipe">
-
-                    <div class="card-body">
-
-                        <input type="hidden" name="IdRecipe" value="@Model.IdRecipe" />
-                        <label>Write your comment</label>
-                        <br />
-                        <textarea class="form-control" name="Content"></textarea>
-                        @Html.ValidationMessage("Content", null, new { @class ="text-danger" })
-                        <br />
-                        <button class="btn btn-success " type="submit">Add</button>
-
+                <h4>Comments</h4>
+                @foreach (var comm in ViewBag.Comm)
+                {
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <div>
+                                    <p>@comm.Content</p>
+                                    <small>@comm.Date</small>
+                                    <strong>
+                                        <i class="bi bi-person"></i>@(comm.User != null ? comm.User.UserName : "")
+                                    </strong>
+                                </div>
+                                <br>
+                                @if ((comm.UserId != null && ViewBag.UserCurent != null && ViewBag.EsteAdmin != null) || ViewBag.EsteAdmin)
+                                {
+                                    @if (comm.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+                                    {
+                                        <div class="d-flex">
+                                            <div>
+                                                <a class="btn btn-outline-primary" style="border-radius: 25px;" href="/Comments/Edit/@comm.IdComment"><i class="bi bi-pencil-square"></i>Edit</a>
+                                            </div>
+                                            <div>
+                                                <form method="post" action="/Comments/Delete/@comm.IdComment">
+                                                    <button class="btn btn-outline-danger" style="border-radius: 25px;" type="submit"><i class="bi bi-trash"></i>Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                <br />
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
                     </div>
+                }
+            }
+            <br />
 
-                </form>
 
-            </div>
+            <form method="post" action="/Recipes/Show/@Model.IdRecipe">
+                <div class="card-body" style="background-color: #ffebeb">
+                    <input type="hidden" name="IdRecipe" value="@Model.IdRecipe" />
+                    <label>Write your comment</label>
+                    <br />
+                    <textarea class="form-control" name="Content"></textarea>
+                    @Html.ValidationMessage("Content", null, new { @class ="text-danger" })
+                    <br />
+                    <button class="btn btn-success" type="submit">Add</button>
+                </div>
+            </form>
 
         </div>
-
-        <div class="col-md-2"></div>
-
     </div>
+
+</div>
 </div>
 <br />
 <br />
 <br />
-@if (ViewBag.HasComm)
-{
-    <p>Comentarii</p>
-    @foreach (var comm in ViewBag.Comm)
-    {
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2"></div>
-
-                <div class="col-md-8">
-
-                    <div>
-
-                        <p>@comm.Content</p>
-                        <small>@comm.Date</small>
-                        <strong>
-                            <i class="bi bi-person"></i>@(
-                    comm.User != null ? comm.User.UserName : "")
-                        </strong>
-
-                    </div>
-                    <br>
-                    @if ((comm.UserId != null && ViewBag.UserCurent != null && ViewBag.EsteAdmin != null) || ViewBag.EsteAdmin)
-                    {
-                        @if (comm.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
-                        {
-                            <div class="d-flex">
-
-                                <div>
-
-                                    <a class="btn btn-outline-primary" style=" border-radius: 25px;" href="/Comments/Edit/@comm.IdComment"><i class="bi bi-pencil-square"></i>Edit</a>
-
-                                </div>
-
-                                <div>
-
-                                    <form method="post" action="/Comments/Delete/@comm.IdComment">
-
-                                        <button class="btn btn-outline-danger" style=" border-radius: 25px;" type="submit"><i class="bi bi-trash"></i>Delete</button>
-
-                                    </form>
-
-                                </div>
-
-                            </div>
-                        }
-
-                    }
-
-                    <br />
-
-                </div>
-
-                <div class="col-md-2"></div>
-
-            </div>
-
-        </div>
-    }
-
-}
