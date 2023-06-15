@@ -1,25 +1,19 @@
 ﻿@model MDS.Models.Recipe
 
 <style>
-
-    .card {
-        background-color: #ffebeb;
-        border-radius: 20px;
-    }
-
     body {
         background-color: #e0ebeb;
     }
+
+    .card {
+        background-color: #ffebeb;
+    }
 </style>
 
-</style>
-
-<a class="btn btn-outline-dark" style="border-radius: 20px; background-color: #ffebeb;" href="/Recipes/Index/"><i class="bi bi-skip-backward-fill"></i> Back to all recipes</a>
-
+<a class="btn btn-outline-dark" style=" border-radius: 20px;" href="/Recipes/Index/"><i class="bi bi-skip-backward-fill"></i> Back to all recipes</a>
 <br />
 <br />
 <br />
-
 @if (ViewBag.Msg != null)
 {
     <div class="alert alert-success" role="alert">
@@ -27,48 +21,55 @@
     </div>
 }
 <br />
-<div class="card">
+<div class="card" style=" border-radius: 20px;">
 
-    <div class="card-body">
+    <div class="card-body" style="background-color:#ffebeb">
         <center>
             <h3 class="card-title py-3 px-3 rounded-2" style="font-family: 'Trocchi', serif;">@Model.NameRecipe</h3>
-            <br /> <br />
-
-            <img style="width:400px; border-radius: 25px;" src="@Model.PhotoLink" class="card-img-top" />
-
         </center>
         <br />
-
-
-
         <div class="x-5"> @Model.DescriptionRecipe</div>
+        <img style="width:200px; border-radius: 25px;" src="@Model.PhotoLink" class="card-img-top" />
         <div class="x-5">Portions: @Model.NrPortions</div>
         <div class="x-5">Calories: @Model.NrCalories</div>
         <hr />
+        @if (ViewBag.EsteAdmin == true)
+        {
+            <div class="d-flex flex-row justify-content-between">
 
+                <a class="btn btn-outline-primary" style=" border-radius: 25px;" href=/Recipes/Edit/@Model.IdRecipe>Edit Recipe</a>
+                <form method="post" action=/Recipes/Delete/@Model.IdRecipe>
+                    <button class="btn btn-outline-danger" style=" border-radius: 25px;" type="submit">Delete Recipe</button>
+                </form>
+
+            </div>
+            <br />
+        }
 
         @{
             ViewData["Title"] = "Add Ingredients";
             bool isAdmin = User.IsInRole("Admin");
         }
-
+        <!-- Afiseaza ingredientele unei retete -->
+        <h2>Ingredients</h2>
+        <ul>
+            @if (Model.RecipeIngredients != null)
+            {
+                @foreach (var ingredient in Model.RecipeIngredients.ToList())
+                {
+                    <li>@ingredient.Ingredient.NameIngredient - @ingredient.Quantity @ingredient.Ingredient.UnitIngredient</li>
+                    @if (isAdmin)
+                    {
+                        <form method="post" action="/RecipeIngredients/Delete/@ingredient.IdRecipeIngredient">
+                            <button class="btn btn-outline-danger" style=" border-radius: 25px;" type="submit"><i class="bi bi-trash"></i>Delete</button>
+                        </form>
+                    }
+                }
+            }
+        </ul>
         <form method="post" action="/Recipes/AddIngredient">
             <input type="hidden" name="recipeId" value="@Model.IdRecipe" />
-            <!-- Display the ingredients of the recipe -->
-
-            <h4>Ingredients</h4>
-
-            <ul>
-                @if (Model.RecipeIngredients != null)
-                {
-                    @foreach (var ingredient in Model.RecipeIngredients.ToList())
-                    {
-                        <li>@ingredient.Ingredient.NameIngredient - @ingredient.Quantity @ingredient.Ingredient.UnitIngredient</li>
-                    }
-
-                }
-            </ul>
-            <!-- Admin can add new ingredients to the recipe -->
+            <!-- Administratorul poate adauga ingrediente noi intr-o reteta -->
             @if (isAdmin)
             {
                 <h2>Add Ingredients</h2>
@@ -89,34 +90,18 @@
                 <br />
 
                 <button type="submit" class="btn btn-primary">Add Ingredient</button>
-
-
             }
         </form>
-        <br />
-
-        @if (ViewBag.EsteAdmin == true)
-        {
-            <div class="d-flex flex-row justify-content-between">
-
-                <a class="btn btn-outline-primary" style="border-radius: 25px;" href="/Recipes/Edit/@Model.IdRecipe">Edit Recipe</a>
-
-                <form method="post" action="/Recipes/Delete/@Model.IdRecipe">
-                    <button class="btn btn-outline-danger" style="border-radius: 25px;" type="submit">Delete Recipe</button>
-                </form>
-
-            </div>
-            <br />
-        }
     </div>
 </div>
 <br />
 <br />
 
 <br />
-<br />
-<br />
 
+<br />
+<br />
+<br />
 <div class="card">
 
     <div class="card-body">
