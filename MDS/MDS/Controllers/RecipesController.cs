@@ -32,11 +32,9 @@ namespace MDS.Controllers
             int totalItems;
             var currentPage = Convert.ToInt32(HttpContext.Request.Query["page"]);
             var offset = 0;
-
             // Checkbox selection
             var selectedIngredients = HttpContext.Request.Query["selectedIngredients"].ToArray();
             ViewBag.AllIngredients = db.Ingredients;
-
             if (selectedIngredients.Length > 0)
             {
                 var selectedIngredientsList = selectedIngredients.Select(int.Parse).ToList();
@@ -87,10 +85,6 @@ namespace MDS.Controllers
                 return View(paginatedRecipes);
             }
         }
-
-
-
-
 
         private void SetAccessRights()
         {
@@ -183,14 +177,11 @@ namespace MDS.Controllers
             }
         }
 
-
-
-
         [HttpPost]
         public IActionResult AddIngredient(int recipeId, string ingredientName, string ingredientUnit, int quantity)
         {
             Recipe recipe = db.Recipes.Include(r => r.RecipeIngredients)
-                                      .FirstOrDefault(r => r.IdRecipe == recipeId);
+                               .FirstOrDefault(r => r.IdRecipe == recipeId);
 
             if (recipe != null)
             {
@@ -199,15 +190,24 @@ namespace MDS.Controllers
                     recipe.RecipeIngredients = new List<RecipeIngredient>();
                 }
 
-                Ingredient ingredient = new Ingredient
+                Ingredient ingredient = db.Ingredients.FirstOrDefault(i => i.NameIngredient == ingredientName);
+
+                if (ingredient == null)
                 {
-                    NameIngredient = ingredientName,
-                    UnitIngredient = ingredientUnit
-                };
+                    // Ingredient doesn't exist, create a new one
+                    ingredient = new Ingredient
+                    {
+                        NameIngredient = ingredientName,
+                        UnitIngredient = ingredientUnit
+                    };
+
+                    db.Ingredients.Add(ingredient);
+                    db.SaveChanges();
+                }
 
                 RecipeIngredient recipeIngredient = new RecipeIngredient
                 {
-                    Ingredient = ingredient,
+                    IdIngredient = ingredient.IdIngredient, // Use the existing ingredient's Id
                     Recipe = recipe,
                     Quantity = quantity
                 };
@@ -215,7 +215,7 @@ namespace MDS.Controllers
                 recipe.RecipeIngredients.Add(recipeIngredient);
                 db.SaveChanges();
 
-                // redirectioneaza catre show-ul retetei respective
+                // Redirect to the show view of the respective recipe
                 return RedirectToAction("Show", new { id = recipeId });
             }
             else
@@ -223,6 +223,7 @@ namespace MDS.Controllers
                 return NotFound();
             }
         }
+
 
 
         public IActionResult New()

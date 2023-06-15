@@ -1,5 +1,17 @@
 ﻿@model IEnumerable<MDS.Models.Recipe>
 
+<!-- Adauga o noua reteta -->
+@{
+    bool isAdmin = User.IsInRole("Admin");
+}
+@if(isAdmin){
+
+   <div class="d-flex flex-row justify-content-between mt-5 ">
+                <a class="btn btn-outline-info" style=" border-radius: 25px;" href="/Recipes/New">Add a new recipe</a>
+           </div>
+}
+<br />
+<br />
 <form method="GET">
     @foreach (var ingredient in ViewBag.AllIngredients)
     {
@@ -10,7 +22,6 @@
     }
     <button type="submit">Filter</button>
 </form>
-
 @foreach (var recipe in Model)
 {
     <div class="card" style="background-color:#f5f6fa">
