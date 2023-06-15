@@ -27,6 +27,7 @@ namespace MDS.Controllers
         public IActionResult Delete(int id)
         {
             Comment comm = db.Comments.Find(id);
+            //doar userul care a lasat comentariul sau administratorul are permisiunea sa stearga 
             if (comm.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
                 db.Comments.Remove(comm);
@@ -66,7 +67,7 @@ namespace MDS.Controllers
                                          .First();
             if (ModelState.IsValid)
             {
-
+                //doar userul care a lasat comentariul sau administratorul are permisiunea sa editeze
                 if (comment.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
                 {
                     comment.Content = requestComment.Content;

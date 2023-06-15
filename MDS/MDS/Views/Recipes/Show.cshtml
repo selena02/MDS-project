@@ -21,8 +21,8 @@
         <br />
         <div class="x-5"> @Model.DescriptionRecipe</div>
         <img style="width:200px; border-radius: 25px;" src="@Model.PhotoLink" class="card-img-top" />
-        <div class="x-5"> @Model.NrPortions</div>
-        <div class="x-5"> @Model.NrCalories</div>
+        <div class="x-5">Portions: @Model.NrPortions</div>
+        <div class="x-5">Calories: @Model.NrCalories</div>
         <hr />
         @if (ViewBag.EsteAdmin == true)
         {
@@ -56,6 +56,7 @@
 
 <form method="post" action="/Recipes/AddIngredient">
     <input type="hidden" name="recipeId" value="@Model.IdRecipe" />
+    <!-- Afiseaza ingredientele unei retete -->
 
     <h2>Ingredients</h2>
 
@@ -69,7 +70,7 @@
 
         }
     </ul>
-
+    <!-- Administratorul poate adauga ingrediente noi intr-o reteta -->
     @if (isAdmin)
     {
         <h2>Add Ingredients</h2>

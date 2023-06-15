@@ -2,6 +2,7 @@
 
 
 
+<!-- search bar pentru a gasi o reteta care contine un ingredient dat de user -->
 
 <form method="GET">
     <div class="input-group mb-3">
@@ -12,7 +13,7 @@
 </form>
 
 
-
+<!-- Adauga o noua reteta -->
 @{
     bool isAdmin = User.IsInRole("Admin");
 }
@@ -30,6 +31,8 @@
        @ViewBag.Msg
     </div>
 }
+
+<!-- Afiseaza retetele existente in baza de date -->
 @foreach (var recipe in ViewBag.Recipes)
 {
     <div class="card" style="background-color:#f5f6fa" >

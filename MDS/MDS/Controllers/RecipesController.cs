@@ -242,11 +242,7 @@ namespace MDS.Controllers
                 recipe.RecipeIngredients.Add(recipeIngredient);
                 db.SaveChanges();
 
-                // Update the ViewBag with the new list of ingredients
-                //ViewBag.Ingredients = recipe.RecipeIngredients.Select(ri => ri.Ingredient).ToList();
-
-
-                // Redirect to the recipe details page or perform any other desired action
+                // redirectioneaza catre show-ul retetei respective
                 return RedirectToAction("Show", new { id = recipeId });
             }
             else
@@ -329,7 +325,6 @@ namespace MDS.Controllers
                 return View(requestRecipe);
             }
         }
-        // [HttpPost]
         [Authorize(Roles = "User,Admin")]
         public ActionResult Delete(int id)
         {

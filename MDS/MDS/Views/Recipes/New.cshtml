@@ -1,4 +1,5 @@
 ﻿@model MDS.Models.Recipe
+<!-- Formularul pentru a adauga o noua reteta -->
 
 <form method="post" action="/Recipes/New">
     <br />
@@ -12,14 +13,14 @@
                 @Html.TextBox("NameRecipe", null, new { @class = "form-control " })
                 @Html.ValidationMessageFor(m => m.NameRecipe, null, new {@class = "text-danger" })
                 <br /><br />
-                @Html.Label("DescriptionRecipe", "Your recipe ")
+                @Html.Label("DescriptionRecipe", "Description ")
                 @Html.TextArea("DescriptionRecipe", null, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m=>m.DescriptionRecipe, null, new { @class ="text-danger" })
                 <br />
                 <br />
 
                 <br /><br />
-                @Html.Label("PhotoLink", "Your recipe ")
+                @Html.Label("PhotoLink", "Photo ")
                 @Html.TextArea("PhotoLink", null, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m=>m.PhotoLink, null, new { @class ="text-danger" })
                 <br />

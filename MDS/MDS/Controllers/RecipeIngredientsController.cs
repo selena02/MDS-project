@@ -26,27 +26,6 @@ namespace MDS.Controllers
             _roleManager = roleManager;
         }
 
-        /* public IActionResult Index()
-         {
-             SelectList customers = new SelectList(this.db.RecipeIngredients.ToList(), "CustomerId", "Name");
-             return View(customers);
-         }
-
-         [HttpPost]
-         public IActionResult Index(string customerId)
-         {
-             SelectList customers = new SelectList(this.db.RecipeIngredients.ToList(), "CustomerId", "Name");
-             SelectListItem selectedItem = customers.ToList().Find(p => p.Value == customerId);
-             ViewBag.Message = "Name: " + selectedItem.Text;
-             ViewBag.Message += "\\nID: " + selectedItem.Value;
-             return View(customers);
-         }  */
-
-        /*public IActionResult Index()
-        {
-            ViewBag.ingredients = new SelectList(db.Ingredients, "IdIngredient", "NameIngredient");
-            return View();
-        }*/
 
         public IActionResult Show(int id)
         {
