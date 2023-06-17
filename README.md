@@ -1,4 +1,4 @@
-# MDS-projec
+# MDS-project
 
 Cauta o reteta in functie de ce ai in frigider.
 
